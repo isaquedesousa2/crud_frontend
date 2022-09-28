@@ -2,7 +2,7 @@ import React from "react";
 import Button from "@mui/material/Button";
 
 
-function ButtonContainer({ children }) {
+function ButtonContainer({ children, onClick }) {
   return (
     <Button
       style={{
@@ -11,6 +11,7 @@ function ButtonContainer({ children }) {
         padding: "10px 20px",
       }}
       variant="contained"
+      onClick={onClick}
     >
       {children}
     </Button>
