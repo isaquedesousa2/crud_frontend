@@ -5,6 +5,7 @@ import SearchImage from './pages/SearchImage';
 import Dashboard from './pages/Dashboard';
 import MyImagens from './pages/MyImages';
 import UploadImage from './pages/UploadImage';
+import MyImageFull from './pages/MyImageFull';
 
 function Routers() {
 
@@ -15,6 +16,7 @@ function Routers() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/dashboard/buscar" element={<SearchImage />} />
         <Route path="/dashboard/minhas-imagens" element={<MyImagens />} />
+        <Route path="/dashboard/minhas-imagens/:name" element={<MyImageFull />} />
         <Route path="/dashboard/salvar-imagens" element={<UploadImage />} />
       </Routes>
     );

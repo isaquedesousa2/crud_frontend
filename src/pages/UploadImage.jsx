@@ -3,23 +3,38 @@ import { Stack, Container, FormControl, TextField } from "@mui/material";
 import TextFieldInput from "../components/TextFieldInput";
 import ButtonContainer from "../components/ButtonContainer";
 import MenuContainer from "../components/MenuContainer";
-import { useFetchPost } from "../hooks/useFetch";
-
+import axios from "axios";
 
 function UploadImage() {
-  const [data, setData] = useState([]);
   const [name, setName] = useState("");
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState('');
+  const [status, setStatus] = useState("");
+  const [erro, setErro] = useState("");
 
-  function handleChange(e) {
-    const temp = {
-      name,
-      image,
-    };
-    setData([...data, temp]);
-
-    // useFetchPost({user_id})
-  }
+  const usePost = () => {
+    axios({
+      method: "post",
+      headers: { "content-type": "multipart/form-data" },
+      url: "http://127.0.0.1:8000/api/v1/users/1/images/uploadfiles/",
+      data: {
+        name: name,
+        image_user: image,
+        user: 1,
+      },
+    })
+      .then((response) => {
+        if (response.status === 201) {
+          setStatus("Imagem salva com sucesso!");
+          setErro("");
+          setImage(null)
+          setName("");
+        }
+      })
+      .catch((e) => {
+        setErro(e.response.data["erro"]);
+        setStatus("");
+      });
+  };
 
   return (
     <Container maxWidth="sm">
@@ -42,16 +57,17 @@ function UploadImage() {
               placeholder="Digite o nome da imagem"
             />
             <TextField
-              onChange={(e) => console.log(e.target.files[0])}
+            value={''}
+              onChange={(e) => {
+                setImage(e.target.files[0]);
+                console.log(e.target.files[0]);
+              }}
               type="file"
+            
             />
-            <ButtonContainer onClick={handleChange} children="Salvar" />
-            {data &&
-              data.map((item, index) => (
-                <div key={index}>
-                  <span>{item.name}</span>
-                </div>
-              ))}
+            <ButtonContainer onClick={usePost} children="Enviar" />
+            {erro && <span style={{ color: "red" }}>{erro}</span>}
+            {status && <span style={{ color: "green" }}>{status}</span>}
           </Stack>
         </FormControl>
       </Stack>
