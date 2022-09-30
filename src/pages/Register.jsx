@@ -16,7 +16,8 @@ function Register() {
         <FormControl fullWidth>
           <Stack spacing={2}>
             <TextFieldInput placeholder="Digite seu usuário" />
-            <TextFieldInput placeholder="Digite seu nome completo" />
+            <TextFieldInput placeholder="Nome" />
+            <TextFieldInput placeholder="Sobrenome" />
             <TextFieldInput placeholder="Digite seu email" />
             <TextFieldInput placeholder="Digite sua senha" />
             <TextFieldInput placeholder="Repita sua senha" />

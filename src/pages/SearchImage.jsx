@@ -7,24 +7,25 @@ import {
 import TextFieldInput from "../components/TextFieldInput";
 import ButtonContainer from "../components/ButtonContainer";
 import MenuContainer from "../components/MenuContainer";
-import { useNavigate } from "react-router-dom";
 import ListImages from "../components/ListImages";
+import useApi from "../hooks/useApi";
+
 
 function SearchImage() {
-  const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
 
-  const api = () => {
-    const url = `http://127.0.0.1:8000/api/v1/users/1/images/search/${search}/`;
+  const { error, setError, data, apiGet } = useApi();
 
-    fetch(url, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((response) => setData(response));
-  };
+  const url = `http://127.0.0.1:8000/api/v1/users/1/images/search/${search}/`;
+
+  const handleSearch = () => {
+    if( search === ''){
+      setError('Digite o nome da imagem!')
+    }else {
+      apiGet({ url: url })
+      setError('')
+    }
+  }
 
   return (
     <>
@@ -42,7 +43,8 @@ function SearchImage() {
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Digite o nome da imagem"
             />
-            <ButtonContainer onClick={() => api()} children="Buscar" />
+            <ButtonContainer onClick={() => handleSearch()} children="Buscar" />
+            {error && <span style={{ color: "red" }}>{error}</span>}
           </Stack>
         </FormControl>
       </Container>

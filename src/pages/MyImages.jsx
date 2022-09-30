@@ -1,20 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Stack, Container } from "@mui/material";
 import MenuContainer from "../components/MenuContainer";
 import ListImages from "../components/ListImages";
-import axios from "axios";
+import useApi from "../hooks/useApi";
 
 function MyImagens() {
-  const [data, setData] = useState([]);
-
   const url = "http://127.0.0.1:8000/api/v1/users/1/images/";
 
-  useEffect((url) => {
-    axios({
-      method: "get",
-      url: url,
-    }).then((response) => setData(response.data));
-  },[])
+  const { success, error, data, apiGet } = useApi();
+
+  useEffect(() => {
+    apiGet({ url: url });
+  }, []);
 
   return (
     <>
@@ -25,6 +22,8 @@ function MyImagens() {
         <Stack marginTop="100px" textAlign="center" className="stack">
           <h1>Minhas Imagens</h1>
           {data && <ListImages data={data} />}
+          {error && <span style={{ color: "red" }}>{error}</span>}
+          {success && <span style={{ color: "green" }}>{success}</span>}
         </Stack>
       </Container>
     </>
