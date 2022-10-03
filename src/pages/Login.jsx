@@ -9,7 +9,7 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { user, isAuthenticated, loginUser } = useAuth();
+  const { login } = useAuth();
 
   return (
     <Container maxWidth="sm">
@@ -24,7 +24,7 @@ function Login() {
           <Stack spacing={2}>
             <TextFieldInput onChange={(e) => setEmail(e.target.value)} placeholder="Digite seu email" />
             <TextFieldInput onChange={(e) => setPassword(e.target.value)} placeholder="Digite sua senha" />
-            <ButtonContainer onClick={() => loginUser({ email: email, password: password})} children="Entrar" />
+            <ButtonContainer onClick={() => login({ email: email, password: password})} children="Entrar" />
           </Stack>
         </FormControl>
       </Stack>

@@ -1,25 +1,20 @@
 import React from "react";
 import { MenuItem } from "@mui/material";
 import { Stack } from "@mui/system";
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 
 function MenuContainer() {
 
-  const location = useLocation()
-  const navigate = useNavigate()
+  const location = useLocation();
 
-  if (location.pathname === '/dashboard'){
-    navigate('dashboard/buscar')
-    console.log(1)
-  }
 
   return (
     <Stack direction='row' marginTop='40px'>
-      <MenuItem><Link style={{color: '#000'}} to='/dashboard/minhas-imagens'>Minhas Imagens</Link></MenuItem>
-      <MenuItem><Link style={{color: '#000'}} to='/dashboard/salvar-imagens'>Salvar Imagem</Link></MenuItem>
-      <MenuItem><Link style={{color: '#000'}} to='/dashboard/buscar'>Buscar Imagem</Link></MenuItem>
-      <MenuItem><Link style={{color: '#000'}} to='/dashboard/sair'>Logout</Link></MenuItem>
+      <Link style={{color: '#000'}} to='/dashboard/minhas-imagens'><MenuItem>Minhas Imagens</MenuItem></Link>
+      <Link style={{color: '#000'}} to='/dashboard/salvar-imagens'><MenuItem>Salvar Imagem</MenuItem></Link>
+      <Link style={{color: '#000'}} to='/dashboard/buscar'><MenuItem>Buscar Imagem</MenuItem></Link>
+      <Link style={{color: '#000'}} to='/dashboard/sair' state={{ url: location.pathname }}><MenuItem>Logout</MenuItem></Link>
     </Stack>
   );
 }

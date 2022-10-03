@@ -4,7 +4,7 @@ import MenuContainer from "../components/MenuContainer";
 import ListImages from "../components/ListImages";
 import useApi from "../hooks/useApi";
 
-function MyImagens() {
+function MyImages() {
   const url = "http://127.0.0.1:8000/api/v1/users/1/images/";
 
   const { success, error, data, apiGet } = useApi();
@@ -30,4 +30,4 @@ function MyImagens() {
   );
 }
 
-export default MyImagens;
+export default MyImages;
