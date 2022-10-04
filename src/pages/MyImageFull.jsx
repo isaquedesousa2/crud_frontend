@@ -5,6 +5,7 @@ import { useLocation } from "react-router-dom";
 function MyImageFull() {
   const location = useLocation();
   const url = location.state.url;
+  
   return (
     <Box sx={{ background: "#000", width: '100%', maxHeight: '100vh'}}>
       <Stack

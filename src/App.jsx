@@ -4,12 +4,12 @@ import { BrowserRouter } from "react-router-dom";
 import { ApiProvider } from "./contexts/api";
 
 function App() {
-  return (
-      <ApiProvider>
+  return (    
         <BrowserRouter>
-          <Routers />
+          <ApiProvider>
+            <Routers />
+          </ApiProvider>
         </BrowserRouter>
-      </ApiProvider>
   );
 }
 

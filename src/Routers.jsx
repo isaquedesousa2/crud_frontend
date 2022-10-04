@@ -15,13 +15,16 @@ function Routers() {
     const { isAuthenticated } = useAuth();
     const location = useLocation();
 
-    if (!isAuthenticated && location.pathname !== "/entrar") {
-      return <Navigate to="/entrar" />;
-    }
+    if (!isAuthenticated && location.pathname === "/cadastrar") return children;
 
-    if (isAuthenticated && location.pathname === "/entrar") {
+    if (isAuthenticated && location.pathname === "/cadastrar")
       return <Navigate to="/dashboard" />;
-    }
+
+    if (!isAuthenticated && location.pathname !== "/entrar")
+      return <Navigate to="/entrar" />;
+
+    if (isAuthenticated && location.pathname === "/entrar")
+      return <Navigate to="/dashboard" />;
 
     return children;
   };
@@ -65,7 +68,11 @@ function Routers() {
           path="/dashboard/salvar-imagens"
           element={<Private children={<UploadImage />} />}
         />
-        <Route exact path="/dashboard/sair" element={<Logout />} />
+        <Route
+          exact
+          path="/dashboard/sair"
+          element={<Private children={<Logout />} />}
+        />
       </Routes>
     </AuthProvider>
   );

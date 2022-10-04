@@ -1,5 +1,6 @@
-import { useState, createContext } from "react";
+import { useState, createContext, useEffect } from "react";
 import axios from "axios";
+import { useLocation } from 'react-router-dom';
 
 export const ApiContext = createContext({});
 
@@ -7,28 +8,41 @@ export const ApiProvider = ({ children }) => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState();
   const [data, setData] = useState([]);
+  const location = useLocation();
 
-  const apiGet = ({ url }) => {
+  useEffect(() => {
+    setError("");
+    setSuccess("");
+    setData([]);
+  }, [location.pathname]);
+
+  const apiGet = ({ url, token }) => {
     axios({
       method: "GET",
-      headers: { "content-type": "multipart/form-data" },
+      headers: {
+        "content-type": "multipart/form-data",
+        'Authorization': `Token ${token}`,
+      },
       url: url,
     })
-      .then(response => {
-        if ( response.data.length === 0){
-          setError('Nenhuma imagem encontrada!')
-        }else{
-          setData(response.data)
-          setError('')
+      .then((response) => {
+        if (response.data.length === 0) {
+          setError("Nenhuma imagem encontrada!");
+        } else {
+          setData(response.data);
+          setError("");
         }
       })
       .catch((e) => setError(e.response.data["error"]));
   };
 
-  const apiPost = ({ url, data }) => {
+  const apiPost = ({ url, data, token }) => {
     axios({
       method: "POST",
-      headers: { "content-type": "multipart/form-data" },
+      headers: {
+        "content-type": "multipart/form-data",
+        'Authorization' : `Token ${token}`,
+      },
       url: url,
       data: data,
     })
@@ -36,9 +50,6 @@ export const ApiProvider = ({ children }) => {
         if (response.status === 201) {
           setSuccess("Imagem salva com sucesso!");
           setError("");
-          setTimeout(() => {
-            setSuccess('');
-          }, 2000)
         }
       })
       .catch((e) => {
@@ -47,19 +58,22 @@ export const ApiProvider = ({ children }) => {
       });
   };
 
-  const apiDelete = ({ url }) => {
+  const apiDelete = ({ url, token }) => {
+    console.log('DELETE')
     axios({
       method: "DELETE",
-      headers: { "content-type": "multipart/form-data" },
+      headers: {
+        "content-type" : "multipart/form-data",
+        'Authorization' : `Token ${token}`,
+      },
       url: url,
     })
       .then((response) => {
         if (response.status === 201) {
           setSuccess("Imagem deletada com sucesso!");
           setError("");
-          setTimeout(() => {
-            setSuccess('');
-          }, 3000)
+          setSuccess("");
+          apiGet({ });
         }
       })
       .catch((e) => {
@@ -69,7 +83,9 @@ export const ApiProvider = ({ children }) => {
   };
 
   return (
-    <ApiContext.Provider value={{ error, setError, success, data, apiGet, apiPost, apiDelete }}>
+    <ApiContext.Provider
+      value={{ error, setError, success, data, apiGet, apiPost, apiDelete }}
+    >
       {children}
     </ApiContext.Provider>
   );

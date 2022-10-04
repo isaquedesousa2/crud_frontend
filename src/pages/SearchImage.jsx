@@ -9,20 +9,22 @@ import ButtonContainer from "../components/ButtonContainer";
 import MenuContainer from "../components/MenuContainer";
 import ListImages from "../components/ListImages";
 import useApi from "../hooks/useApi";
+import useAuth from "../hooks/useAuth";
 
 
 function SearchImage() {
   const [search, setSearch] = useState("");
 
   const { error, setError, data, apiGet } = useApi();
+  const { user, token } = useAuth();
 
-  const url = `http://127.0.0.1:8000/api/v1/users/1/images/search/${search}/`;
+  const url = `http://127.0.0.1:8000/api/v1/users/${user}/images/search/${search}/`;
 
   const handleSearch = () => {
     if( search === ''){
       setError('Digite o nome da imagem!')
     }else {
-      apiGet({ url: url })
+      apiGet({ url: url, token: token })
       setError('')
     }
   }
@@ -43,12 +45,12 @@ function SearchImage() {
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Digite o nome da imagem"
             />
-            <ButtonContainer onClick={() => handleSearch()} children="Buscar" />
+            <ButtonContainer onClick={() => handleSearch} children="Buscar" />
             {error && <span style={{ color: "red" }}>{error}</span>}
           </Stack>
         </FormControl>
       </Container>
-      <ListImages data={data}/>
+      <ListImages data={data} user={user} token={token}/>
     </>
   );
 }
